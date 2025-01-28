@@ -24,31 +24,8 @@ run: build
 	AIKIDO_BLOCK=1 \
 	java -javaagent:$(JAVA_AGENT) -DportNumber=8088 -jar $(JAR_FILE)
 
-# Run the application without Zen
-.PHONY: runWithoutZen
-runWithoutZen: build
-	@echo "Running JavalinPostgres without Zen & ENV (http://localhost:8089)"
-	AIKIDO_TOKEN="random-invalid-token" \
-	nohup java -DportNumber=8089 -jar $(JAR_FILE) > output2.log &
-
-# Test with opentelemetry :
-.PHONY: runWithOpentel
-runWithOpentel: build
-	@echo "Running JavalinPostgres with Zen & OpenTelemetry"
-	wget https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/latest/download/opentelemetry-javaagent.jar
-	AIKIDO_TOKEN="token" \
-	AIKIDO_REALTIME_ENDPOINT="http://localhost:5000/realtime" \
-	AIKIDO_ENDPOINT="http://localhost:5000" \
-	AIKIDO_BLOCK=1 \
-	AIKIDO_LOG_LEVEL="trace" \
-	nohup java -javaagent:$(JAVA_AGENT) -javaagent:opentelemetry-javaagent.jar -Dotel.service.name=service -DportNumber=8088 -jar $(JAR_FILE) > output1.log &
-
 # Clean the project
 .PHONY: clean
 clean:
 	@echo "Cleaning the project..."
 	$(GRADLEW) clean
-
-.PHONY: kill
-kill:
-	pkill -f java
