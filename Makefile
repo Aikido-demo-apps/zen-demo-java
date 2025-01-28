@@ -13,6 +13,7 @@ download: clean
 	curl -L -O https://github.com/AikidoSec/firewall-java/releases/download/v1.0.3/zen.zip
 	unzip zen.zip -d zen_by_aikido
 	rm zen.zip
+
 # Build the project
 .PHONY: build
 build:
@@ -22,7 +23,7 @@ build:
 
 # Run the application with the Java agent
 .PHONY: run
-run: build
+run:
 	@echo "Running JavalinPostgres with Zen & ENV (http://localhost:8080)"
 	AIKIDO_BLOCK=1 java -javaagent:$(JAVA_AGENT) -DportNumber=8080 -jar $(JAR_FILE)
 

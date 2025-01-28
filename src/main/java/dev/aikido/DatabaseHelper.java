@@ -4,6 +4,8 @@ import dev.aikido.models.Pet;
 import org.postgresql.ds.PGSimpleDataSource;
 
 import javax.sql.DataSource;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,13 +14,19 @@ import java.util.ArrayList;
 
 public class DatabaseHelper {
     // We can create a method to create and return a DataSource for our Postgres DB
-    private static DataSource  createDataSource() {
-        // The url specifies the address of our database along with username and password credentials
-        // you should replace these with your own username and password
-        final String url =
-                "jdbc:postgresql://localhost:5432/db?user=user&password=password";
+    private static PGSimpleDataSource createDataSource() {
+        String databaseUrl = System.getenv("DATABASE_URL");
+        if (databaseUrl == null) {
+            throw new RuntimeException("DATABASE_URL environment variable is required");
+        }
+        URI databaseUri = URI.create(databaseUrl);
+
+        // Create jdbc url
         final PGSimpleDataSource dataSource = new PGSimpleDataSource();
-        dataSource.setUrl(url);
+        dataSource.setUrl("jdbc:postgresql://%s:%s%s?sslmode=disable".formatted(databaseUri.getHost(), databaseUri.getPort(), databaseUri.getPath()));
+        dataSource.setUser(databaseUri.getUserInfo().split(":")[0]);
+        dataSource.setPassword(databaseUri.getUserInfo().split(":")[1]);
+        dataSource.setSsl(false);
         return dataSource;
     }
     public static ArrayList<Object> getAllPets() {
@@ -34,7 +42,8 @@ public class DatabaseHelper {
                 String owner = rs.getString("owner");
                 pets.add(new Pet(id, name, owner));
             }
-        } catch (SQLException ignored) {
+        } catch (SQLException e) {
+            System.err.println("Database error occurred: " + e.getMessage());
         }
         return pets;
     }
@@ -52,7 +61,8 @@ public class DatabaseHelper {
                 String owner = rs.getString("owner");
                 return new Pet(pet_id, name, owner);
             }
-        } catch (SQLException ignored) {
+        } catch (SQLException e) {
+            System.err.println("Database error occurred: " + e.getMessage());
         }
         return new Pet(0, "Unknown", "Unknown");
     }
@@ -63,7 +73,8 @@ public class DatabaseHelper {
             Connection conn = db.getConnection();
             PreparedStatement insertStmt = conn.prepareStatement(sql);
             return insertStmt.executeUpdate();
-        } catch (SQLException ignored) {
+        } catch (SQLException e) {
+            System.err.println("Database error occurred: " + e.getMessage());
         }
         return 0;
     }
