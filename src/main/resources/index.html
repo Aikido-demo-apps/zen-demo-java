@@ -17,10 +17,16 @@
             text-align: center;
             color: #24104F;
         }
+        .logo {
+            margin: 0px auto;
+            max-width: 150px;
+            display: block;
+            margin-bottom: 18px;
+        }
 
         .container {
-            max-width: 400px;
-            margin: 0 auto;
+            max-width: 750px;
+            margin: 10px auto;
             background: #fff;
             padding: 20px;
             border-radius: 8px;
@@ -43,22 +49,31 @@
         .button:hover {
             background-color: #24104F;
         }
+        a {
+            color: #A68BF7;
+        }
     </style>
 </head>
 <body>
+<img src="/aikido_logo.svg" class="logo" />
 <div class="container">
     <h1>Zen by Aikido: Demo</h1>
-    <p>Demo explainer</p>
+    <p>
+        Zen, developed by Aikido, is designed to protect your web applications from a wide range of vulnerabilities.
+        This is our Demo page where you can experiment with different types of injections and attacks. You can also test
+        our bot blocking and rate-limiting features! <br/>
+        <a href="https://aikido.dev/zen">Check out more</a> and start securing your web applications today!
+    </p>
 </div>
 <div class="container">
     <h2>Test different vulnerabilities: </h2>
-    <a href="/pages/create" class="button">(SQL Injection) Create a dog</a>
-    <a href="/pages/execute" class="button">(Shell Injection) Execute a command</a>
-    <a href="/pages/request" class="button">(SSRF) Fetch a page</a>
-    <a href="/pages/read" class="button">(Path Traversal) Read a file</a>
+    <a href="/pages/create" class="button"><b>SQL Injection</b> | Create a dog</a>
+    <a href="/pages/execute" class="button"><b>Shell Injection</b> | Execute a command</a>
+    <a href="/pages/request" class="button"><b>SSRF</b> | Fetch a page</a>
+    <a href="/pages/read" class="button"><b>Path Traversal</b> | Read a file</a>
 </div>
 <div class="container">
-    <h2>Test rate-limited route: </h2>
+    <h2>Test rate-limiting</h2>
     <p>[rate-limiting explainer]</p>
 </div>
 </body>

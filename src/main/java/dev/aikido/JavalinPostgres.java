@@ -18,7 +18,9 @@ public class JavalinPostgres {
     public static class CreateRequest { public String name;}
 
     public static void main(String[] args) {
-        Javalin app = Javalin.create().start(Integer.valueOf(System.getProperty("portNumber", "8088")));
+        Javalin app = Javalin.create(config -> {
+            config.staticFiles.add("/public");
+        }).start(Integer.valueOf(System.getProperty("portNumber", "8088")));
         // Add our middleware :
         app.before(new SetUserHandler());
         app.before(new AikidoJavalinMiddleware());
