@@ -160,7 +160,7 @@ window.addEventListener('load', () => {
     <h2>Test rate-limiting and bot blocking</h2>
     <p>You can test our rate limiting features with the following button,
         this is equivalent to running the following curl command : </p>
-    <code class="code">curl https://example.aikido.dev/</code>
+    <code class="code">curl https://zen-demo-java.fly.dev/test_ratelimiting_1</code>
     <button class="button" id="rate_limiting">Test ratelimiting (max 3 requests / minute)</button>
     <code id="rate_limiting_res" class="req_result">
         <br/>
@@ -171,7 +171,7 @@ window.addEventListener('load', () => {
     <code class="code">
         curl <br/>
         &emsp;&emsp;-H "User-Agent: Mozilla/5.0 (compatible; Bytespider/1.0; +http://bytespider.com/bot.html)" <br/>
-        &emsp;&emsp;-X GET http://example.com/test_bot_blocking
+        &emsp;&emsp;-X GET https://zen-demo-java.fly.dev/test_bot_blocking
     </code>
     <button class="button" id="bot_blocking1">Test bot blocking (Safe header)</button>
     <button class="button" id="bot_blocking2">Test bot blocking (Dangerous header)</button>
