@@ -46,6 +46,10 @@
             text-decoration: none;
             margin: 10px 0;
         }
+        #bot_blocking1, #bot_blocking2 {
+            display: inline-block;
+            margin-bottom: 0px;
+        }
 
         .button:hover {
             background-color: #24104F;
@@ -92,7 +96,24 @@ window.addEventListener('load', () => {
             });
     });
 
-    document.getElementById('bot_blocking').addEventListener('click', function() {
+    document.getElementById('bot_blocking1').addEventListener('click', function() {
+        const resultElement = document.getElementById('bot_blocking_res');
+        resultElement.textContent = 'Sending request...';
+
+        // Simulate a request to the server
+        fetch('/test_bot_blocking')
+            .then(response => {
+                return response.text();
+            })
+            .then(data => {
+                resultElement.textContent = data;
+            })
+            .catch(error => {
+                resultElement.textContent = 'Error: ' + error.message;
+            });
+    });
+
+    document.getElementById('bot_blocking2').addEventListener('click', function() {
         const resultElement = document.getElementById('bot_blocking_res');
         resultElement.textContent = 'Sending request...';
 
@@ -107,7 +128,7 @@ window.addEventListener('load', () => {
                 return response.text();
             })
             .then(data => {
-                resultElement.textContent = 'Response: ' + data;
+                resultElement.textContent = data;
             })
             .catch(error => {
                 resultElement.textContent = 'Error: ' + error.message;
@@ -151,7 +172,8 @@ window.addEventListener('load', () => {
         &emsp;&emsp;-H "User-Agent: Mozilla/5.0 (compatible; Bytespider/1.0; +http://bytespider.com/bot.html)" <br/>
         &emsp;&emsp;-X GET http://example.com/test_bot_blocking
     </code>
-    <button class="button" id="bot_blocking">Test bot blocking</button>
+    <button class="button" id="bot_blocking1">Test bot blocking (Safe header)</button>
+    <button class="button" id="bot_blocking2">Test bot blocking (Dangerous header)</button>
     <code id="bot_blocking_res" class="req_result">
         <br/>
     </code>
