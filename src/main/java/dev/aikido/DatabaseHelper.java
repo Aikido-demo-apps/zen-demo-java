@@ -23,9 +23,10 @@ public class DatabaseHelper {
 
         // Create jdbc url
         final PGSimpleDataSource dataSource = new PGSimpleDataSource();
-        dataSource.setUrl("jdbc:postgresql://%s:%s%s".formatted(databaseUri.getHost(), databaseUri.getPort(), databaseUri.getPath()));
+        dataSource.setUrl("jdbc:postgresql://%s:%s%s?sslmode=disable".formatted(databaseUri.getHost(), databaseUri.getPort(), databaseUri.getPath()));
         dataSource.setUser(databaseUri.getUserInfo().split(":")[0]);
         dataSource.setPassword(databaseUri.getUserInfo().split(":")[1]);
+        dataSource.setSsl(false);
         return dataSource;
     }
     public static ArrayList<Object> getAllPets() {
@@ -41,7 +42,8 @@ public class DatabaseHelper {
                 String owner = rs.getString("owner");
                 pets.add(new Pet(id, name, owner));
             }
-        } catch (SQLException ignored) {
+        } catch (SQLException e) {
+            System.err.println("Database error occurred: " + e.getMessage());
         }
         return pets;
     }
@@ -59,7 +61,8 @@ public class DatabaseHelper {
                 String owner = rs.getString("owner");
                 return new Pet(pet_id, name, owner);
             }
-        } catch (SQLException ignored) {
+        } catch (SQLException e) {
+            System.err.println("Database error occurred: " + e.getMessage());
         }
         return new Pet(0, "Unknown", "Unknown");
     }
@@ -70,7 +73,8 @@ public class DatabaseHelper {
             Connection conn = db.getConnection();
             PreparedStatement insertStmt = conn.prepareStatement(sql);
             return insertStmt.executeUpdate();
-        } catch (SQLException ignored) {
+        } catch (SQLException e) {
+            System.err.println("Database error occurred: " + e.getMessage());
         }
         return 0;
     }

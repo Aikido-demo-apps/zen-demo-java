@@ -46,9 +46,11 @@ done\n\
 \n\
 echo "Postgres is up - executing SQL script"\n\
 psql "$DATABASE_URL" -f /app/database.sql\n\
+echo "Creating tmp dir"\n\
+mkdir -pv /app/.tmp\n\
 \n\
 echo "Starting application"\n\
-make run' > /app/start.sh
+AIKIDO_TMP_DIR=/app/.tmp make run' > /app/start.sh
 
 RUN chmod 755 /app/start.sh
 
