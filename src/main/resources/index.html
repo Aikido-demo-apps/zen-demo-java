@@ -73,6 +73,48 @@
             font-weight: 700;
         }
     </style>
+    <script>
+window.addEventListener('load', () => {
+    document.getElementById('rate_limiting').addEventListener('click', function() {
+        const resultElement = document.getElementById('rate_limiting_res');
+        resultElement.textContent = 'Sending request...';
+
+        // Simulate a request to the server
+        fetch('/test_ratelimiting_1')
+            .then(response => {
+                return response.text();
+            })
+            .then(data => {
+                resultElement.textContent = data;
+            })
+            .catch(error => {
+                resultElement.textContent = 'Error: ' + error.message;
+            });
+    });
+
+    document.getElementById('bot_blocking').addEventListener('click', function() {
+        const resultElement = document.getElementById('bot_blocking_res');
+        resultElement.textContent = 'Sending request...';
+
+        // Simulate a request to the server
+        fetch('/test_bot_blocking', {
+            method: 'GET',
+            headers: {
+                'User-Agent': 'Mozilla/5.0 (compatible; Bytespider/1.0; +http://bytespider.com/bot.html)'
+            }
+        })
+            .then(response => {
+                return response.text();
+            })
+            .then(data => {
+                resultElement.textContent = 'Response: ' + data;
+            })
+            .catch(error => {
+                resultElement.textContent = 'Error: ' + error.message;
+            });
+    });
+});
+    </script>
 </head>
 <body>
 <img src="/aikido_logo.svg" class="logo" />
@@ -104,7 +146,11 @@
     <hr>
     <p>You can test our bot blocking features with the following button,
     this is equivalent to running the following curl command : </p>
-    <code class="code">curl https://example.aikido.dev/</code>
+    <code class="code">
+        curl <br/>
+        &emsp;&emsp;-H "User-Agent: Mozilla/5.0 (compatible; Bytespider/1.0; +http://bytespider.com/bot.html)" <br/>
+        &emsp;&emsp;-X GET http://example.com/test_bot_blocking
+    </code>
     <button class="button" id="bot_blocking">Test bot blocking</button>
     <code id="bot_blocking_res" class="req_result">
         <br/>
