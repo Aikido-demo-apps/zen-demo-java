@@ -41,16 +41,17 @@ public class JavalinPostgres {
 
         // Test rate-limiting :
         app.get("/test_ratelimiting_1", ctx -> {
-            ctx.result("OK");
+            ctx.result("Request successful (Ratelimiting 1)");
+        });
+        app.get("/test_ratelimiting_2", ctx -> {
+            ctx.result("Request successful (Ratelimiting 2)");
         });
 
-        // Path parameters :
-        app.get("/hello/{name}", ctx -> { // the {} syntax does not allow slashes ('/') as part of the parameter
-            ctx.result("Hello: " + ctx.pathParam("name"));
+        // Test bot blocking :
+        app.get("/test_bot_blocking", ctx -> {
+            ctx.result("Hello World! Bot blocking enabled on this route.");
         });
-        app.get("/hello/<name>", ctx -> { // the <> syntax allows slashes ('/') as part of the parameter
-            ctx.result("Hello: " + ctx.pathParam("name"));
-        });
+
 
         // Serve API :
         app.get("/api/pets", ctx -> {
