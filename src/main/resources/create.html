@@ -7,19 +7,26 @@
     <style>
         body {
             font-family: monospace;
-            background: linear-gradient(to bottom, #A68BF7, #D1C6F9);
+            background: linear-gradient(to bottom, #EEE, #DDD);
             margin: 0;
-            min-height: 100vh;
+            height: 100vh;
             padding: 20px;
+            background-attachment: fixed;
         }
 
         h1 {
             text-align: center;
             color: #24104F;
         }
+        .logo {
+            margin: 0px auto;
+            max-width: 175px;
+            display: block;
+            margin-bottom: 25px;
+        }
 
         .container {
-            max-width: 400px;
+            max-width: 750px;
             margin: 15px auto;
             background: #fff;
             padding: 20px;
@@ -53,7 +60,7 @@
         button:hover {
             background-color: #24104F;
         }
-                code {
+        code {
             display: block;
             width: auto;
             background-color: #6551F3;
@@ -110,6 +117,7 @@
     </style>
 </head>
 <body>
+<img src="/aikido_logo.svg" class="logo" />
 <div class="container">
     <h1>Add a New Pet</h1>
     <details>

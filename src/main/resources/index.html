@@ -7,7 +7,8 @@
     <style>
         body {
             font-family: monospace;
-            background: linear-gradient(to bottom, #A68BF7, #D1C6F9);
+            background: linear-gradient(to bottom, #EEE, #DDD);
+            background-attachment: fixed;
             margin: 0;
             height: 100vh;
             padding: 20px;
@@ -19,9 +20,9 @@
         }
         .logo {
             margin: 0px auto;
-            max-width: 150px;
+            max-width: 175px;
             display: block;
-            margin-bottom: 18px;
+            margin-bottom: 25px;
         }
 
         .container {
@@ -52,6 +53,25 @@
         a {
             color: #A68BF7;
         }
+        .req_result {
+            width: auto;
+            display: block;
+            background-color: whitesmoke;
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 4px;
+
+        }
+        .code {
+            display: block;
+            width: auto;
+            background-color: black;
+            color: whitesmoke;
+            padding: 5px;
+            margin: 0px;
+            border-radius: 5px;
+            font-weight: 700;
+        }
     </style>
 </head>
 <body>
@@ -73,8 +93,23 @@
     <a href="/pages/read" class="button"><b>Path Traversal</b> | Read a file</a>
 </div>
 <div class="container">
-    <h2>Test rate-limiting</h2>
-    <p>[rate-limiting explainer]</p>
+    <h2>Test rate-limiting and bot blocking</h2>
+    <p>You can test our rate limiting features with the following button,
+        this is equivalent to running the following curl command : </p>
+    <code class="code">curl https://example.aikido.dev/</code>
+    <button class="button" id="rate_limiting">Test ratelimiting (max 3 requests / minute)</button>
+    <code id="rate_limiting_res" class="req_result">
+        <br/>
+    </code>
+    <hr>
+    <p>You can test our bot blocking features with the following button,
+    this is equivalent to running the following curl command : </p>
+    <code class="code">curl https://example.aikido.dev/</code>
+    <button class="button" id="bot_blocking">Test bot blocking</button>
+    <code id="bot_blocking_res" class="req_result">
+        <br/>
+    </code>
 </div>
+<br/>
 </body>
 </html>
