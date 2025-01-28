@@ -19,11 +19,13 @@ public class DatabaseHelper {
         if (databaseUrl == null) {
             throw new RuntimeException("DATABASE_URL environment variable is required");
         }
+        URI databaseUri = URI.create(databaseUrl);
 
         // Create jdbc url
-        String jdbcUrl = String.format("jdbc:%s", databaseUrl);
         final PGSimpleDataSource dataSource = new PGSimpleDataSource();
-        dataSource.setUrl(jdbcUrl);
+        dataSource.setUrl("jdbc:postgresql://%s:%s%s".formatted(databaseUri.getHost(), databaseUri.getPort(), databaseUri.getPath()));
+        dataSource.setUser(databaseUri.getUserInfo().split(":")[0]);
+        dataSource.setPassword(databaseUri.getUserInfo().split(":")[1]);
         return dataSource;
     }
     public static ArrayList<Object> getAllPets() {
