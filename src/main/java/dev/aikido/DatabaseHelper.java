@@ -4,6 +4,8 @@ import dev.aikido.models.Pet;
 import org.postgresql.ds.PGSimpleDataSource;
 
 import javax.sql.DataSource;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,13 +14,16 @@ import java.util.ArrayList;
 
 public class DatabaseHelper {
     // We can create a method to create and return a DataSource for our Postgres DB
-    private static DataSource  createDataSource() {
-        // The url specifies the address of our database along with username and password credentials
-        // you should replace these with your own username and password
-        final String url =
-                "jdbc:postgresql://localhost:5432/db?user=user&password=password";
+    private static PGSimpleDataSource createDataSource() {
+        String databaseUrl = System.getenv("DATABASE_URL");
+        if (databaseUrl == null) {
+            throw new RuntimeException("DATABASE_URL environment variable is required");
+        }
+
+        // Create jdbc url
+        String jdbcUrl = String.format("jdbc:%s", databaseUrl);
         final PGSimpleDataSource dataSource = new PGSimpleDataSource();
-        dataSource.setUrl(url);
+        dataSource.setUrl(jdbcUrl);
         return dataSource;
     }
     public static ArrayList<Object> getAllPets() {
