@@ -31,4 +31,4 @@ run: build
 clean:
 	@echo "Cleaning the project..."
 	$(GRADLEW) clean
-	rm -r zen_by_aikido
+	rm -rf zen_by_aikido
