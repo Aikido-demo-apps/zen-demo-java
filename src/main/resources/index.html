@@ -135,6 +135,48 @@ window.addEventListener('load', () => {
                 resultElement.textContent = 'Error: ' + error.message;
             });
     });
+    document.getElementById('user_123456').addEventListener('click', function() {
+        const resultElement = document.getElementById('user_123456_res');
+        resultElement.textContent = 'Sending request...';
+
+        // Simulate a request to the server
+        fetch('/test_user_blocking', {
+            method: 'GET',
+            headers: {
+                'user': '123456'
+            }
+        })
+            .then(response => {
+                return response.text();
+            })
+            .then(data => {
+                resultElement.textContent = data;
+            })
+            .catch(error => {
+                resultElement.textContent = 'Error: ' + error.message;
+            });
+    });
+    document.getElementById('user_789').addEventListener('click', function() {
+        const resultElement = document.getElementById('user_789_res');
+        resultElement.textContent = 'Sending request...';
+
+        // Simulate a request to the server
+        fetch('/test_user_blocking', {
+            method: 'GET',
+            headers: {
+                'user': '789'
+            }
+        })
+            .then(response => {
+                return response.text();
+            })
+            .then(data => {
+                resultElement.textContent = data;
+            })
+            .catch(error => {
+                resultElement.textContent = 'Error: ' + error.message;
+            });
+    });
 });
     </script>
 </head>
@@ -176,6 +218,30 @@ window.addEventListener('load', () => {
     <button class="button" id="bot_blocking1">Test bot blocking (Safe header)</button>
     <button class="button" id="bot_blocking2">Test bot blocking (Dangerous header)</button>
     <code id="bot_blocking_res" class="req_result">
+        <br/>
+    </code>
+</div>
+
+<div class="container">
+    <h2>User blocking</h2>
+    <p>In this demo app the user is determined by a <em>user</em> header, we provided some examples here : </p>
+    <code class="code">
+        curl \<br/>
+        <span style="width: 20px; display: inline-block;"></span>-H "user: 123456" \<br/>
+        <span style="width: 20px; display: inline-block;"></span>-X GET https://zen-demo-java.fly.dev/test_user_blocking
+    </code>
+    <button class="button" id="user_123456">Request with allowed user (ID: 123456)</button>
+    <code id="user_123456_res" class="req_result">
+        <br/>
+    </code>
+    <hr>
+    <code class="code">
+        curl \<br/>
+        <span style="width: 20px; display: inline-block;"></span>-H "user: 789" \<br/>
+        <span style="width: 20px; display: inline-block;"></span>-X GET https://zen-demo-java.fly.dev/test_user_blocking
+    </code>
+    <button class="button" id="user_789">Request with blocked user (ID: 789)</button>
+    <code id="user_789_res" class="req_result">
         <br/>
     </code>
 </div>

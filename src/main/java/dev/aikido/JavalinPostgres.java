@@ -1,5 +1,6 @@
 package dev.aikido;
 
+import dev.aikido.agent_api.context.Context;
 import dev.aikido.agent_api.middleware.AikidoJavalinMiddleware;
 import dev.aikido.handlers.SetUserHandler;
 import io.javalin.Javalin;
@@ -52,6 +53,12 @@ public class JavalinPostgres {
         // Test bot blocking :
         app.get("/test_bot_blocking", ctx -> {
             ctx.result("Hello World! Bot blocking enabled on this route.");
+        });
+
+        // Test user blocking :
+        app.get("/test_user_blocking", ctx -> {
+            String id = Context.get().getUser().id();
+            ctx.result("Hello User with id: " + id);
         });
 
 
