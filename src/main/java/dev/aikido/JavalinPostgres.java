@@ -61,6 +61,12 @@ public class JavalinPostgres {
             ctx.result("Hello User with id: " + id);
         });
 
+        // Clear database :
+        app.get("/clear", ctx -> {
+            DatabaseHelper.clearAll();
+            ctx.result("Cleared successfully.");
+        });
+
 
         // Serve API :
         app.get("/api/pets", ctx -> {

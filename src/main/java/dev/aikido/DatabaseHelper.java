@@ -29,6 +29,24 @@ public class DatabaseHelper {
         dataSource.setSsl(false);
         return dataSource;
     }
+    public static void clearAll() throws SQLException {
+        DataSource db = createDataSource();
+        Connection conn = null;
+        PreparedStatement stmt = null;
+
+        try {
+            conn = db.getConnection();
+            stmt = conn.prepareStatement("DELETE FROM pets");
+            int rowsAffected = stmt.executeUpdate();
+            System.out.println(rowsAffected + " pets have been removed from the database.");
+        } catch (SQLException e) {
+            System.err.println("Database error occurred: " + e.getMessage());
+        } finally {
+            // Close resources in the reverse order of their creation
+            stmt.close();
+            conn.close();
+        }
+    }
     public static ArrayList<Object> getAllPets() {
         ArrayList<Object> pets = new ArrayList<>();
         DataSource db = createDataSource();
