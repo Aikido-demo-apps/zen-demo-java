@@ -1,0 +1,31 @@
+@import url('/css/font.css');
+
+body {
+    font-family: 'New Grotesk', sans-serif;
+    background: linear-gradient(to bottom, #EEE, #DDD);
+    background-attachment: fixed;
+    margin: 0;
+    height: 100vh;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+    color: #24104F;
+}
+.logo {
+    margin: 0px auto;
+    max-width: 175px;
+    display: block;
+    margin-bottom: 25px;
+    margin-top: 10px;
+}
+
+.container {
+    max-width: 750px;
+    margin: 18px auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
