@@ -20,30 +20,6 @@
             border: 1px solid #ccc;
             border-radius: 4px;
         }
-
-        button {
-            background-color: #6551F3;
-            color: white;
-            padding: 10px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            width: 100%;
-        }
-
-        button:hover {
-            background-color: #24104F;
-        }
-                code {
-            display: block;
-            width: auto;
-            background-color: #6551F3;
-            color: whitesmoke;
-            padding: 5px;
-            margin: 2.5px 0px;
-            border-radius: 5px;
-            font-weight: 700;
-        }
         details {
             border: 1px solid #aaa;
             border-radius: 4px;
@@ -69,12 +45,12 @@
     <form id="commandForm">
         <details open>
             <summary>Examples</summary>
-            <code>invalid-command-here</code>
-            <code>ls -la</code>
+            <code class="code">invalid-command-here</code> <br/>
+            <code class="code">ls -la</code>
         </details>
         <label for="userCommand">Command input :</label>
         <input type="text" id="userCommand" name="userCommand" required>
-        <button type="submit">Execute!</button>
+        <button class="btn" type="submit">Execute!</button>
     </form>
 </div>
 
