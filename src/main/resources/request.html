@@ -46,8 +46,10 @@
         <details open>
             <summary>Examples</summary>
             <code class="code">https://aikido.dev</code>
+            <p style="display:inline">Request made to an outside service, not SSRF</p>
             <br/>
             <code class="code">http://localhost:7000/</code>
+            <p style="display:inline">Trying to access local resources, an SSRF attack</p>
         </details>
         <label for="url">URL :</label>
         <input type="text" id="url" name="url" required>

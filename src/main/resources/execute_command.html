@@ -45,8 +45,11 @@
     <form id="commandForm">
         <details open>
             <summary>Examples</summary>
-            <code class="code">invalid-command-here</code> <br/>
+            <code class="code">invalid-command-here</code>
+            <p style="display:inline">An invalid command to show that you have shell access</p>
+            <br/>
             <code class="code">ls -la</code>
+            <p style="display:inline">Actual shell command which results in shell injection</p>
         </details>
         <label for="userCommand">Command input :</label>
         <input type="text" id="userCommand" name="userCommand" required>
