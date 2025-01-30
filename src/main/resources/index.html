@@ -21,7 +21,6 @@
         }
         #bot_blocking1, #bot_blocking2 {
             display: inline-block;
-            margin-bottom: 0px;
         }
 
         .button:hover {
@@ -42,12 +41,6 @@
         .code {
             display: block;
             width: auto;
-            background-color: #2A2A2A;
-            color: whitesmoke;
-            padding: 5px;
-            margin: 0px;
-            border-radius: 5px;
-            font-weight: 700;
         }
         .vuln-overview {
             display: grid;
@@ -183,22 +176,22 @@ window.addEventListener('load', () => {
 <div class="container">
     <h2>Test rate-limiting and bot blocking</h2>
     <p>You can test our rate limiting features with the following button,
-        this is equivalent to running the following curl command : </p>
+        this is equivalent to running the following curl command</p>
     <code class="code">curl https://zen-demo-java.fly.dev/test_ratelimiting_1</code>
-    <button class="button" id="rate_limiting">Test ratelimiting (max 3 requests / minute)</button>
+    <button class="button" id="rate_limiting" style="display: inline;">Test rate-limiting</button> (max 3 requests / minute)
     <code id="rate_limiting_res" class="req_result">
         <br/>
     </code>
     <hr>
     <p>You can test our bot blocking features with the following button,
-    this is equivalent to running the following curl command : </p>
+    this is equivalent to running the following curl command</p>
     <code class="code">
         curl \<br/>
         <span style="width: 20px; display: inline-block;"></span>-H "User-Agent: Mozilla/5.0 (compatible; Bytespider/1.0; +http://bytespider.com/bot.html)" \<br/>
         <span style="width: 20px; display: inline-block;"></span>-X GET https://zen-demo-java.fly.dev/test_bot_blocking
     </code>
-    <button class="button" id="bot_blocking1">Test bot blocking (Safe header)</button>
-    <button class="button" id="bot_blocking2">Test bot blocking (Dangerous header)</button>
+    <button class="button" id="bot_blocking1">Test bot blocking (safe header)</button>
+    <button class="button" id="bot_blocking2">Test bot blocking (dangerous header)</button>
     <code id="bot_blocking_res" class="req_result">
         <br/>
     </code>
@@ -206,7 +199,7 @@ window.addEventListener('load', () => {
 
 <div class="container">
     <h2>User blocking</h2>
-    <p>In this demo app the user is determined by a <em>user</em> header, we provided some examples here : </p>
+    <p>In this demo app the user is determined by a <em>user</em> header, we provided some examples here</p>
     <code class="code">
         curl \<br/>
         <span style="width: 20px; display: inline-block;"></span>-H "user: 123456" \<br/>

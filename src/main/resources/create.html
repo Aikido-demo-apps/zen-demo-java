@@ -20,30 +20,6 @@
             border: 1px solid #ccc;
             border-radius: 4px;
         }
-
-        button {
-            background-color: #6551F3;
-            color: white;
-            padding: 10px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            width: 100%;
-        }
-
-        button:hover {
-            background-color: #24104F;
-        }
-        code {
-            display: block;
-            width: auto;
-            background-color: #6551F3;
-            color: whitesmoke;
-            padding: 5px;
-            margin: 2.5px 0px;
-            border-radius: 5px;
-            font-weight: 700;
-        }
         details {
             border: 1px solid #aaa;
             border-radius: 4px;
@@ -67,8 +43,8 @@
             font-size: 0.7em;
         }
         .pet-id {
-            background:  #6551F3;
-            color: white;
+            background:  #e3e0fc;
+            color: black;
             padding: 5px 10px;
             border-radius: 5px;
             font-weight: 900;
@@ -100,13 +76,14 @@
     <h1>SQL Injection | Create a new Pet</h1>
     <details open>
         <summary>Examples</summary>
-        <code>Good Pet</code>
-        <code>Malicious Pet', 'Gru from the Minions') -- </code>
+        <code class="code">Good Pet</code> <p style="display:inline">Safe example for creation of a pet</p>
+        <br style="margin: 10px;"/>
+        <code class="code">Malicious Pet', 'Gru from the Minions') -- </code> <p style="display:inline">This is a sql injection.</p>
     </details>
     <form id="petForm">
         <label for="petName">Pet's Name:</label>
         <input type="text" id="petName" name="petName" required>
-        <button type="submit">Add Pet</button>
+        <button class="btn" type="submit">Add Pet</button>
     </form>
 </div>
 

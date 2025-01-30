@@ -20,30 +20,9 @@
             border: 1px solid #ccc;
             border-radius: 4px;
         }
-
-        button {
-            background-color: #6551F3;
-            color: white;
-            padding: 10px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            width: 100%;
-            margin-bottom: 5px  ;
-        }
-
-        button:hover {
-            background-color: #24104F;
-        }
-                code {
+        .code {
             display: block;
-            width: auto;
-            background-color: #6551F3;
-            color: whitesmoke;
-            padding: 5px;
-            margin: 2.5px 0px;
-            border-radius: 5px;
-            font-weight: 700;
+            margin: 5px 0px;
         }
         details {
             border: 1px solid #aaa;
@@ -70,13 +49,14 @@
     <div id="urlForm">
         <details open>
             <summary>Examples</summary>
-            <code>https://aikido.dev</code>
-            <code>http://localhost:7000/</code>
+            <code class="code">https://aikido.dev</code>
+            <br/>
+            <code class="code">http://localhost:7000/</code>
         </details>
         <label for="url">URL :</label>
         <input type="text" id="url" name="url" required>
-        <button id="req1">Make your request! (HttpURLConnection)</button>
-        <button id="req2">Make your request! (OkHttp)</button>
+        <button class="btn" id="req1">Make your request! (HttpURLConnection)</button>
+        <button class="btn" id="req2">Make your request! (OkHttp)</button>
     </div>
 </div>
 
