@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script async defer data-website-id="9b61da17-d763-4d51-a145-b6acce1d9f82" src="https://analytics.woutfeys.be/umami.js"></script>
+    <script src="/js/example-copy.js"></script>
     <title>Zen Demo | Fetch a page</title>
     <style>
         @import url('/css/general.css');
@@ -45,14 +46,14 @@
     <div id="urlForm">
         <details open>
             <summary>Examples</summary>
-            <code class="code">https://aikido.dev</code>
+            <code class="code example">https://aikido.dev</code>
             <p style="display:inline">Request made to an outside service, not SSRF</p>
             <br/>
-            <code class="code">http://localhost:7000/</code>
+            <code class="code example">http://localhost:7000/</code>
             <p style="display:inline">Trying to access local resources, an SSRF attack</p>
         </details>
         <label for="url">URL :</label>
-        <input type="text" id="url" name="url" required>
+        <input type="text" id="url" name="url" class="example-input" required>
         <button class="btn" id="req1">Make your request! (HttpURLConnection)</button>
         <button class="btn" id="req2">Make your request! (OkHttp)</button>
     </div>
