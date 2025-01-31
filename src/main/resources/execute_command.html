@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Zen Demo | Execute a command</title>
     <script async defer data-website-id="9b61da17-d763-4d51-a145-b6acce1d9f82" src="https://analytics.woutfeys.be/umami.js"></script>
+    <script src="/js/example-copy.js"></script>
     <style>
         @import url('/css/general.css');
 
@@ -45,14 +46,14 @@
     <form id="commandForm">
         <details open>
             <summary>Examples</summary>
-            <code class="code">invalid-command-here</code>
+            <code class="code example">invalid-command-here</code>
             <p style="display:inline">An invalid command to show that you have shell access</p>
             <br/>
-            <code class="code">ls -la</code>
+            <code class="code example">ls -la</code>
             <p style="display:inline">Actual shell command which results in shell injection</p>
         </details>
         <label for="userCommand">Command input :</label>
-        <input type="text" id="userCommand" name="userCommand" required>
+        <input type="text" id="userCommand" name="userCommand" class="example-input" required>
         <button class="btn" type="submit">Execute!</button>
     </form>
 </div>

@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script async defer data-website-id="9b61da17-d763-4d51-a145-b6acce1d9f82" src="https://analytics.woutfeys.be/umami.js"></script>
+    <script src="/js/example-copy.js"></script>
     <title>Zen Demo | Add a New Pet</title>
     <style>
         @import url('/css/general.css');
@@ -76,13 +77,13 @@
     <h1>SQL Injection | Create a new Pet</h1>
     <details open>
         <summary>Examples</summary>
-        <code class="code">Good Pet</code> <p style="display:inline">Safe example for creation of a pet</p>
+        <code class="code example">Good Pet</code> <p style="display:inline">Safe example for creation of a pet</p>
         <br style="margin: 10px;"/>
-        <code class="code">Malicious Pet', 'Gru from the Minions') -- </code> <p style="display:inline">This is a sql injection.</p>
+        <code class="code example">Malicious Pet', 'Gru from the Minions') -- </code> <p style="display:inline">This is a sql injection.</p>
     </details>
     <form id="petForm">
         <label for="petName">Pet's Name:</label>
-        <input type="text" id="petName" name="petName" required>
+        <input type="text" id="petName" name="petName" class="example-input" required>
         <button class="btn" type="submit">Add Pet</button>
     </form>
 </div>
