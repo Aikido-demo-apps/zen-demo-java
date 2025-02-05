@@ -78,7 +78,11 @@ public class JavalinPostgres {
             String petName = ctx.bodyAsClass(CreateRequest.class).name;
             ctx.result(petName);
             Integer rowsCreated = DatabaseHelper.createPetByName(petName);
-            ctx.result(String.valueOf(rowsCreated));
+            if (rowsCreated == -1) {
+                ctx.result(String.valueOf("Database error occurred"));
+            } else {
+                ctx.result("Success!");
+            }
         });
 
         app.post("/api/execute", ctx -> {

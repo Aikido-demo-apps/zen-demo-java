@@ -108,6 +108,6 @@ public class DatabaseHelper {
         } catch (SQLException e) {
             System.err.println("Database error occurred: " + e.getMessage());
         }
-        return 0;
+        return -1;
     }
 }
