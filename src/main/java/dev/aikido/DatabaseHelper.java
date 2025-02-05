@@ -5,12 +5,12 @@ import org.postgresql.ds.PGSimpleDataSource;
 
 import javax.sql.DataSource;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 public class DatabaseHelper {
     // We can create a method to create and return a DataSource for our Postgres DB
@@ -47,6 +47,13 @@ public class DatabaseHelper {
             conn.close();
         }
     }
+    private static final String REGEX = "^[A-Z0-9 ]+$";
+    private static boolean isValidInput(String input) {
+        // Compile the regex pattern
+        Pattern pattern = Pattern.compile(REGEX);
+        // Check if the input matches the pattern
+        return !pattern.matcher(input).matches();
+    }
     public static ArrayList<Object> getAllPets() {
         ArrayList<Object> pets = new ArrayList<>();
         DataSource db = createDataSource();
@@ -54,10 +61,17 @@ public class DatabaseHelper {
             Connection conn = db.getConnection();
             PreparedStatement stmt = conn.prepareStatement("SELECT * FROM pets");
             ResultSet rs = stmt.executeQuery();
+
             while (rs.next()) {
                 Integer id = rs.getInt("pet_id");
                 String name = rs.getString("pet_name");
+                if (isValidInput(name)) {
+                    name = "[REDACTED: XSS RISK]";
+                }
                 String owner = rs.getString("owner");
+                if (isValidInput(owner)) {
+                    owner = "[REDACTED: XSS RISK]";
+                }
                 pets.add(new Pet(id, name, owner));
             }
         } catch (SQLException e) {
