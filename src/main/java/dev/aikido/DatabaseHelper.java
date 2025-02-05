@@ -47,7 +47,7 @@ public class DatabaseHelper {
             conn.close();
         }
     }
-    private static final String REGEX = "^[A-z0-9 ]+$";
+    private static final String REGEX = "^[A-Za-z0-9 ,-.]+$";
     private static boolean isValidInput(String input) {
         // Compile the regex pattern
         Pattern pattern = Pattern.compile(REGEX);
