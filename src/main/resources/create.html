@@ -90,7 +90,7 @@
 
 <div class="container">
     <h1>Existing Pets</h1>
-    <p><a href="/clear">Click here</a> to clear all existing pets.</p>
+    <p><a id="clearButton" href="#">Click here</a> to clear all existing pets.</p>
     <div>
         <ul id="petsList">
 
@@ -99,6 +99,11 @@
 </div>
 
 <script>
+    document.getElementById('clearButton').addEventListener('click', function(event) {
+        fetch('/clear').then(response => {
+            window.location.reload();
+        });
+    });
     document.getElementById('petForm').addEventListener('submit', function(event) {
         event.preventDefault(); // Prevent the default form submission
 
