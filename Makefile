@@ -25,7 +25,7 @@ build:
 .PHONY: run
 run:
 	@echo "Running JavalinPostgres with Zen & ENV (http://localhost:8080)"
-	AIKIDO_BLOCK=1 java -javaagent:$(JAVA_AGENT) -DportNumber=8080 -jar $(JAR_FILE)
+	AIKIDO_BLOCK=1 java -javaagent:$(JAVA_AGENT) -DportNumber=8080 -jar $(JAR_FILE) -Xmx256m -XX:+UseContainerSupport
 
 # Clean the project
 .PHONY: clean
