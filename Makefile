@@ -1,7 +1,7 @@
 # Define variables
 GRADLEW = ./gradlew
 JAR_FILE = build/libs/JavalinPostgres-1.0-SNAPSHOT-all.jar
-JAVA_AGENT = zen_by_aikido/dist/agent.jar
+JAVA_AGENT = zen_by_aikido/zen/agent.jar
 
 # Default target
 .PHONY: all
