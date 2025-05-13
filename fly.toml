@@ -6,7 +6,9 @@
 app = 'zen-demo-java'
 primary_region = 'ams'
 
-[build]
+[metrics]
+  port = 9400
+  path = "/metrics"
 
 [http_service]
   internal_port = 8080

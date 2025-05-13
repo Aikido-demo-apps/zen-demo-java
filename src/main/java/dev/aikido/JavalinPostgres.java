@@ -4,6 +4,8 @@ import dev.aikido.agent_api.context.Context;
 import dev.aikido.agent_api.middleware.AikidoJavalinMiddleware;
 import dev.aikido.handlers.SetUserHandler;
 import io.javalin.Javalin;
+import io.prometheus.metrics.exporter.httpserver.HTTPServer;
+import io.prometheus.metrics.instrumentation.jvm.JvmMetrics;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -18,7 +20,9 @@ public class JavalinPostgres {
     public static class RequestRequest { public String url;}
     public static class CreateRequest { public String name;}
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
+        JvmMetrics.builder().register();
+
         Javalin app = Javalin.create(config -> {
             config.staticFiles.add("/public");
         }).start(Integer.valueOf(System.getProperty("portNumber", "8088")));
@@ -113,6 +117,11 @@ public class JavalinPostgres {
             String content = Helpers.readFile(filePath);
             ctx.result(content);
         });
+
+        // Start Prometheus metrics server
+        HTTPServer server = HTTPServer.builder().port(9400).buildAndStart();
+        System.out.println(
+            "HTTPServer listening on port http://localhost:" + server.getPort() + "/metrics");
     }
 
     private static String loadHtmlFromFile(String filePath) {
