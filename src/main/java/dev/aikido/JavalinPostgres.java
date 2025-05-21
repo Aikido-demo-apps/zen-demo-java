@@ -6,6 +6,7 @@ import dev.aikido.handlers.SetUserHandler;
 import io.javalin.Javalin;
 import io.prometheus.metrics.exporter.httpserver.HTTPServer;
 import io.prometheus.metrics.instrumentation.jvm.JvmMetrics;
+import io.sentry.Sentry;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -21,6 +22,7 @@ public class JavalinPostgres {
     public static class CreateRequest { public String name;}
 
     public static void main(String[] args) throws IOException {
+        Sentry.init("https://e51493e5d1e0c40b0f98ac384a888f2a@o4509361147281408.ingest.us.sentry.io/4509361147543552");
         JvmMetrics.builder().register();
 
         Javalin app = Javalin.create(config -> {
