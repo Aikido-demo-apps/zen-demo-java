@@ -124,6 +124,11 @@ public class JavalinPostgres {
             ctx.result(content);
         });
 
+        app.exception(Exception.class, (e, ctx) -> {
+            Sentry.captureException(e);
+            ctx.status(500).result("Internal Server Error");
+        });
+
         // Start Prometheus metrics server
         HTTPServer server = HTTPServer.builder().port(9400).buildAndStart();
         System.out.println(
