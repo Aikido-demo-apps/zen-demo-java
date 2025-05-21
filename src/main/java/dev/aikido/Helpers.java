@@ -1,5 +1,6 @@
 package dev.aikido;
 
+import io.sentry.Sentry;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -19,6 +20,7 @@ public class Helpers {
             }
             process.waitFor();
         } catch (IOException | InterruptedException e) {
+            Sentry.captureException(e);
             output.append("Error: ").append(e.getMessage());
         }
         return output.toString();
@@ -37,6 +39,7 @@ public class Helpers {
             }
             in.close();
         } catch (IOException e) {
+            Sentry.captureException(e);
             response.append("Error: ").append(e.getMessage());
         }
         return response.toString();
@@ -51,6 +54,7 @@ public class Helpers {
                 response.append(resp.body().string());
             }
         } catch (IOException e) {
+            Sentry.captureException(e);
             response.append("Error: ").append(e.getMessage());
         }
         return response.toString();
@@ -65,6 +69,7 @@ public class Helpers {
                 content.append(line).append("\n");
             }
         } catch (IOException e) {
+            Sentry.captureException(e);
             content.append("Error: ").append(e.getMessage());
         }
         return content.toString();

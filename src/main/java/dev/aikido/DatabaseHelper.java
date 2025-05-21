@@ -1,6 +1,7 @@
 package dev.aikido;
 
 import dev.aikido.models.Pet;
+import io.sentry.Sentry;
 import org.postgresql.ds.PGSimpleDataSource;
 
 import javax.sql.DataSource;
@@ -40,6 +41,7 @@ public class DatabaseHelper {
             int rowsAffected = stmt.executeUpdate();
             System.out.println(rowsAffected + " pets have been removed from the database.");
         } catch (SQLException e) {
+            Sentry.captureException(e);
             System.err.println("Database error occurred: " + e.getMessage());
         } finally {
             // Close resources in the reverse order of their creation
@@ -75,6 +77,7 @@ public class DatabaseHelper {
                 pets.add(new Pet(id, name, owner));
             }
         } catch (SQLException e) {
+            Sentry.captureException(e);
             System.err.println("Database error occurred: " + e.getMessage());
         }
         return pets;
@@ -94,6 +97,7 @@ public class DatabaseHelper {
                 return new Pet(pet_id, name, owner);
             }
         } catch (SQLException e) {
+            Sentry.captureException(e);
             System.err.println("Database error occurred: " + e.getMessage());
         }
         return new Pet(0, "Unknown", "Unknown");
@@ -106,6 +110,7 @@ public class DatabaseHelper {
             PreparedStatement insertStmt = conn.prepareStatement(sql);
             return insertStmt.executeUpdate();
         } catch (SQLException e) {
+            Sentry.captureException(e);
             System.err.println("Database error occurred: " + e.getMessage());
         }
         return -1;
