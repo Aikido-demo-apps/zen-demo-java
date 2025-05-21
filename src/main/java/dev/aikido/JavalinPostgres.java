@@ -22,7 +22,11 @@ public class JavalinPostgres {
     public static class CreateRequest { public String name;}
 
     public static void main(String[] args) throws IOException {
-        Sentry.init("https://e51493e5d1e0c40b0f98ac384a888f2a@o4509361147281408.ingest.us.sentry.io/4509361147543552");
+        Sentry.init(options -> {
+            options.setDsn("https://e51493e5d1e0c40b0f98ac384a888f2a@o4509361147281408.ingest.us.sentry.io/4509361147543552");
+            options.setSendDefaultPii(true);
+            options.setDebug(true);
+        });
         JvmMetrics.builder().register();
 
         Javalin app = Javalin.create(config -> {
