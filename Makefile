@@ -10,7 +10,7 @@ all: build
 # Download zen : 
 .PHONY: download
 download: clean
-	curl -L -O https://github.com/AikidoSec/firewall-java/releases/download/v1.1.4/zen.zip
+	curl -L -O https://github.com/AikidoSec/firewall-java/releases/download/v1.1.5/zen.zip
 	unzip zen.zip -d zen_by_aikido
 	rm zen.zip
 
