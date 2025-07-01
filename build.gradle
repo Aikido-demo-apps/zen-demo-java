@@ -28,6 +28,9 @@ dependencies {
     implementation 'io.prometheus:prometheus-metrics-exporter-httpserver:1.3.6'
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
+    constraints {
+        implementation 'com.squareup.okio:okio:3.4.0'
+    }
 }
 
 test {
