@@ -7,6 +7,8 @@ import okhttp3.Response;
 import dev.aikido.agent_api.vulnerabilities.AikidoException;
 import java.io.*;
 import java.nio.file.Path;
+import java.net.UnknownHostException;
+import java.net.SocketTimeoutException;
 
 public class Helpers {
     public static class ResponseResult {
@@ -50,6 +52,8 @@ public class Helpers {
             java.net.URL url = new java.net.URL(urlString);
             java.net.HttpURLConnection conn = (java.net.HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
+            conn.setConnectTimeout(5000);
+            conn.setReadTimeout(5000);
             int responseCode = conn.getResponseCode();
             BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
             String inputLine;
@@ -58,12 +62,12 @@ public class Helpers {
             }
             in.close();
             return new ResponseResult(responseCode, response.toString());
-        } catch (AikidoException e) {
+        } catch (AikidoException | UnknownHostException | SocketTimeoutException e) {
             Sentry.captureException(e);
             return new ResponseResult(500, "Error: " + e.getMessage());
         } catch (IOException e) {
             Sentry.captureException(e);
-            return new ResponseResult(400, "Error: " + e.getMessage());
+            return new ResponseResult(400, "Error: " + e.getMessage() + " " + e.getCause());
         }
     }
 
@@ -78,16 +82,12 @@ public class Helpers {
             return new ResponseResult(resp.code(), response.toString());
 
         } 
-        catch (AikidoException e) {
+        catch (AikidoException | UnknownHostException | SocketTimeoutException e) {
             Sentry.captureException(e);
             return new ResponseResult(500, "Error: " + e.getMessage());
         }
          catch (IOException e) {
             Sentry.captureException(e);
-            // (Is a directory)
-            if (e.getMessage().contains("Is a directory")) {
-                return new ResponseResult(500, "Error: " + e.getMessage());
-            }
             return new ResponseResult(400, "Error: " + e.getMessage());
         }
 
