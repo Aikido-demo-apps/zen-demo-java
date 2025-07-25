@@ -97,31 +97,31 @@ public class JavalinPostgres {
 
         app.post("/api/execute", ctx -> {
             String userCommand = ctx.bodyAsClass(CommandRequest.class).userCommand;
-            String result = executeShellCommand(userCommand);
-            ctx.result(result);
+            ResponseResult result = executeShellCommand(userCommand);
+            ctx.status(result.getStatusCode()).result(result.getMessage());
         });
         app.get("/api/execute/<command>", ctx -> {
             String userCommand = ctx.pathParam("command");
-            String result = executeShellCommand(userCommand);
-            ctx.result(result);
+            ResponseResult result = executeShellCommand(userCommand);
+            ctx.status(result.getStatusCode()).result(result.getMessage());
         });
 
         app.post("/api/request", ctx -> {
             String url = ctx.bodyAsClass(RequestRequest.class).url;
-            String response = makeHttpRequest(url);
-            ctx.result(response);
+            ResponseResult response = makeHttpRequest(url);
+            ctx.status(response.getStatusCode()).result(response.getMessage());
         });
 
         app.post("/api/request2", ctx -> {
             String url = ctx.bodyAsClass(RequestRequest.class).url;
-            String response = makeHttpRequestWithOkHttp(url);
-            ctx.result(response);
+            ResponseResult response = makeHttpRequestWithOkHttp(url);
+            ctx.status(response.getStatusCode()).result(response.getMessage());
         });
 
         app.get("/api/read", ctx -> {
             String filePath = ctx.queryParam("path");
-            String content = Helpers.readFile(filePath);
-            ctx.result(content);
+            ResponseResult content = Helpers.readFile(filePath);
+            ctx.status(content.getStatusCode()).result(content.getMessage());
         });
 
         app.exception(Exception.class, (e, ctx) -> {
