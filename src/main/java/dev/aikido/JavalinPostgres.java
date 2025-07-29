@@ -13,13 +13,13 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Map;
 
-import static dev.aikido.Helpers.*;
+import static dev. aikido.Helpers.*;
 
 public class JavalinPostgres {
     public static class CommandRequest { public String userCommand;}
     public static class RequestRequest { public String url;}
-    public static class CreateRequest { public String name;}
 
     public static void main(String[] args) throws IOException {
         Sentry.init(options -> {
@@ -85,7 +85,12 @@ public class JavalinPostgres {
         });
 
         app.post("/api/create", ctx -> {
-            String petName = ctx.bodyAsClass(CreateRequest.class).name;
+            Map<String, String> jsonBody = ctx.bodyAsClass(Map.class);
+            String petName = jsonBody.get("name");
+            if (petName == null || petName.trim().isEmpty()) {
+                ctx.status(400).result("Missing or empty 'petName' field");
+                return;
+            }
             ctx.result(petName);
             Integer rowsCreated = DatabaseHelper.createPetByName(petName);
             if (rowsCreated == -1) {
