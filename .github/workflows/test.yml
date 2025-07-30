@@ -1,0 +1,29 @@
+name: Test
+on:
+  push:
+    branches:
+      - main
+      - dev-testing
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Firewall Tests 
+    runs-on: ubuntu-latest
+    steps:
+      
+      - name: Checkout action
+        id: checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name:  Run Firewall QA Tests
+        uses: AikidoSec/firewall-tester-action@releases/v1
+        with:
+          dockerfile_path: ./Dockerfile
+          sleep_before_test: 15
+          max_parallel_tests: 5
+
+          
