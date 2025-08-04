@@ -9,6 +9,7 @@ import java.io.*;
 import java.nio.file.Path;
 import java.net.UnknownHostException;
 import java.net.SocketTimeoutException;
+import java.nio.file.Paths;
 
 public class Helpers {
     public static class ResponseResult {
@@ -100,6 +101,23 @@ public class Helpers {
     public static ResponseResult readFile(String filePath) {
         StringBuilder content = new StringBuilder();
         File file = Path.of("src/main/resources/blogs", filePath).toFile();
+        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                content.append(line).append("\n");
+            }
+            return new ResponseResult(200, content.toString());
+        } catch (IOException e) {
+            Sentry.captureException(e);
+            return new ResponseResult(500, "Error: " + e.getMessage());
+        }
+    }
+
+   
+    public static ResponseResult readFile2(String filePath) {
+        StringBuilder content = new StringBuilder();
+        // use Path.get to resolve the path
+        File file = Paths.get("src/main/resources/blogs").resolve(filePath).toFile();
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
             String line;
             while ((line = br.readLine()) != null) {

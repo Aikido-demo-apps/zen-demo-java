@@ -129,6 +129,12 @@ public class JavalinPostgres {
             ctx.status(content.getStatusCode()).result(content.getMessage());
         });
 
+        app.get("/api/read2", ctx -> {
+            String filePath = ctx.queryParam("path");
+            ResponseResult content = Helpers.readFile2(filePath);
+            ctx.status(content.getStatusCode()).result(content.getMessage());
+        });
+
         app.exception(Exception.class, (e, ctx) -> {
             Sentry.captureException(e);
             ctx.status(500).result("Internal Server Error: " + e.getMessage());
