@@ -19,7 +19,7 @@ import static dev. aikido.Helpers.*;
 
 public class JavalinPostgres {
     public static class CommandRequest { public String userCommand;}
-    public static class RequestRequest { public String url;}
+    public static class RequestRequest { public String url; public String port;}
 
     public static void main(String[] args) throws IOException {
         Sentry.init(options -> {
@@ -123,6 +123,17 @@ public class JavalinPostgres {
             ctx.status(response.getStatusCode()).result(response.getMessage());
         });
 
+        app.post("/api/request_different_port", ctx -> {
+            String url = ctx.bodyAsClass(RequestRequest.class).url;
+            String port = ctx.bodyAsClass(RequestRequest.class).port;
+            if (port == null || port.trim().isEmpty()) {
+                ctx.status(400).result("Missing or empty 'port' field");
+                return;
+            }
+            url = url.replaceAll(":\\d+", ":" + port);
+            ResponseResult response = makeHttpRequestWithOkHttp(url);
+            ctx.status(response.getStatusCode()).result(response.getMessage());
+        });
         app.get("/api/read", ctx -> {
             String filePath = ctx.queryParam("path");
             ResponseResult content = Helpers.readFile(filePath);
