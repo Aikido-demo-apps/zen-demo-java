@@ -11,6 +11,7 @@ import java.net.UnknownHostException;
 import java.net.SocketTimeoutException;
 import java.nio.file.Paths;
 
+
 public class Helpers {
     public static class ResponseResult {
         private final int statusCode;
@@ -67,12 +68,15 @@ public class Helpers {
             }
             in.close();
             return new ResponseResult(responseCode, response.toString());
-        } catch (AikidoException | UnknownHostException | SocketTimeoutException e) {
+        } catch (AikidoException | UnknownHostException | SocketTimeoutException | IllegalArgumentException e) {
             Sentry.captureException(e);
             return new ResponseResult(500, "Error: " + e.getMessage());
         } catch (IOException e) {
+            if ( e.getCause().getMessage().contains("host = null")) {
+                return new ResponseResult(500, "Error: " + e.getMessage());
+            }
             Sentry.captureException(e);
-            return new ResponseResult(400, "Error: " + e.getMessage() + " " + e.getCause());
+            return new ResponseResult(400, "Error: " + e.getMessage() + " CLASS: " + e.getClass().getName() + " CAUSE: " + e.getCause().getMessage());
         }
     }
 
