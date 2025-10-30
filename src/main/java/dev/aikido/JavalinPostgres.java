@@ -13,13 +13,13 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Map;
 
 import static dev.aikido.Helpers.*;
 
 public class JavalinPostgres {
     public static class CommandRequest { public String userCommand;}
-    public static class RequestRequest { public String url;}
-    public static class CreateRequest { public String name;}
+    public static class RequestRequest { public String url; public String port;}
 
     public static void main(String[] args) throws IOException {
         Sentry.init(options -> {
@@ -85,7 +85,12 @@ public class JavalinPostgres {
         });
 
         app.post("/api/create", ctx -> {
-            String petName = ctx.bodyAsClass(CreateRequest.class).name;
+            Map<String, String> jsonBody = ctx.bodyAsClass(Map.class);
+            String petName = jsonBody.get("name");
+            if (petName == null || petName.trim().isEmpty()) {
+                ctx.status(400).result("Missing or empty 'petName' field");
+                return;
+            }
             ctx.result(petName);
             Integer rowsCreated = DatabaseHelper.createPetByName(petName);
             if (rowsCreated == -1) {
@@ -97,31 +102,48 @@ public class JavalinPostgres {
 
         app.post("/api/execute", ctx -> {
             String userCommand = ctx.bodyAsClass(CommandRequest.class).userCommand;
-            String result = executeShellCommand(userCommand);
-            ctx.result(result);
+            ResponseResult result = executeShellCommand(userCommand);
+            ctx.status(result.getStatusCode()).result(result.getMessage());
         });
         app.get("/api/execute/<command>", ctx -> {
             String userCommand = ctx.pathParam("command");
-            String result = executeShellCommand(userCommand);
-            ctx.result(result);
+            ResponseResult result = executeShellCommand(userCommand);
+            ctx.status(result.getStatusCode()).result(result.getMessage());
         });
 
         app.post("/api/request", ctx -> {
             String url = ctx.bodyAsClass(RequestRequest.class).url;
-            String response = makeHttpRequest(url);
-            ctx.result(response);
+            ResponseResult response = makeHttpRequest(url);
+            ctx.status(response.getStatusCode()).result(response.getMessage());
         });
 
         app.post("/api/request2", ctx -> {
             String url = ctx.bodyAsClass(RequestRequest.class).url;
-            String response = makeHttpRequestWithOkHttp(url);
-            ctx.result(response);
+            ResponseResult response = makeHttpRequestWithOkHttp(url);
+            ctx.status(response.getStatusCode()).result(response.getMessage());
         });
 
+        app.post("/api/request_different_port", ctx -> {
+            String url = ctx.bodyAsClass(RequestRequest.class).url;
+            String port = ctx.bodyAsClass(RequestRequest.class).port;
+            if (port == null || port.trim().isEmpty()) {
+                ctx.status(400).result("Missing or empty 'port' field");
+                return;
+            }
+            url = url.replaceAll(":\\d+", ":" + port);
+            ResponseResult response = makeHttpRequestWithOkHttp(url);
+            ctx.status(response.getStatusCode()).result(response.getMessage());
+        });
         app.get("/api/read", ctx -> {
             String filePath = ctx.queryParam("path");
-            String content = Helpers.readFile(filePath);
-            ctx.result(content);
+            ResponseResult content = Helpers.readFile(filePath);
+            ctx.status(content.getStatusCode()).result(content.getMessage());
+        });
+
+        app.get("/api/read2", ctx -> {
+            String filePath = ctx.queryParam("path");
+            ResponseResult content = Helpers.readFile2(filePath);
+            ctx.status(content.getStatusCode()).result(content.getMessage());
         });
 
         app.exception(Exception.class, (e, ctx) -> {
