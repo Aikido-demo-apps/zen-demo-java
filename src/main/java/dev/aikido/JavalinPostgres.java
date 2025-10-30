@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
 
-import static dev. aikido.Helpers.*;
+import static dev.aikido.Helpers.*;
 
 public class JavalinPostgres {
     public static class CommandRequest { public String userCommand;}

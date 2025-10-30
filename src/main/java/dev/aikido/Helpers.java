@@ -120,7 +120,7 @@ public class Helpers {
    
     public static ResponseResult readFile2(String filePath) {
         StringBuilder content = new StringBuilder();
-        // use Path.get to resolve the path
+      
         File file = Paths.get("src/main/resources/blogs").resolve(filePath).toFile();
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
             String line;
