@@ -6,6 +6,7 @@ import io.javalin.http.Handler;
 import java.util.List;
 import java.util.Arrays;
 
+import static dev.aikido.agent_api.SetRateLimitGroup.setRateLimitGroup;
 import static dev.aikido.agent_api.SetUser.setUser;
 
 public class SetUserHandler implements Handler {
@@ -21,6 +22,12 @@ public class SetUserHandler implements Handler {
 
     @Override
     public void handle(Context ctx) throws Exception {
+        // --- Rate Limiting Group Logic ---
+        String rateLimitingGroupId = ctx.cookie("RateLimitingGroupID");
+        if (rateLimitingGroupId != null) {
+            setRateLimitGroup(rateLimitingGroupId);
+        }
+
         String userId = ctx.header("user");
         if (userId != null) {
             try {
