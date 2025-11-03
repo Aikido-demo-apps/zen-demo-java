@@ -7,8 +7,8 @@ app = 'zen-demo-java-danger'
 primary_region = 'ams'
 
 [[vm]]
-  memory = '1gb'
-  cpu_kind = 'shared'
+  memory = '2048mb'
+  cpu_kind = 'performance'
   cpus = 1
 
 [env]

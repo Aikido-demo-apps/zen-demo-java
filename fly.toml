@@ -24,6 +24,6 @@ primary_region = 'ams'
   force_https = true
 
 [[vm]]
-  memory = '1gb'
-  cpu_kind = 'shared'
+  memory = '2048mb'
+  cpu_kind = 'performance'
   cpus = 1
