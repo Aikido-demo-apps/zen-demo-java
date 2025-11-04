@@ -44,7 +44,7 @@ public class Helpers {
             return new ResponseResult(200, output.toString());
         } catch (IOException | InterruptedException e) {
             if (e.getMessage().contains("No such file or directory")) {
-                return new ResponseResult(200, "Error: " + e.getMessage());
+                return new ResponseResult(400, "Error: " + e.getMessage());
             }
             Sentry.captureException(e);
             return new ResponseResult(500, "Error: " + e.getMessage());
