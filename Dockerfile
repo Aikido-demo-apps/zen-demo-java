@@ -15,7 +15,7 @@ RUN make download
 RUN make build
 
 # Runtime stage
-FROM openjdk:17-slim
+FROM openjdk:17.0.1-jdk-slim
 
 # Install make and postgresql-client
 RUN apt-get update && \
