@@ -15,7 +15,7 @@ RUN make download
 RUN make build
 
 # Runtime stage
-FROM amazoncorretto:8-alpine
+FROM amazoncorretto:17-alpine
 
 # Install make and postgresql-client
 RUN apk update && \
