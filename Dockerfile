@@ -19,7 +19,7 @@ FROM amazoncorretto:8-alpine
 
 # Install make and postgresql-client
 RUN apk update && \
-    apk add make postgresql-client && \
+    apk add make postgresql-client bash && \
     rm -rf /var/cache/apk/*
 
 # Set working directory
