@@ -15,12 +15,12 @@ RUN make download
 RUN make build
 
 # Runtime stage
-FROM openjdk:17-slim
+FROM amazoncorretto:8-alpine
 
 # Install make and postgresql-client
-RUN apt-get update && \
-    apt-get install -y make postgresql-client && \
-    rm -rf /var/lib/apt/lists/*
+RUN apk update && \
+    apk add make postgresql-client && \
+    rm -rf /var/cache/apk/*
 
 # Set working directory
 WORKDIR /app
