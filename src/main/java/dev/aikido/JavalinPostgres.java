@@ -134,6 +134,26 @@ public class JavalinPostgres {
             ResponseResult response = makeHttpRequestWithOkHttp(url);
             ctx.status(response.getStatusCode()).result(response.getMessage());
         });
+        
+        app.post("/api/stored_ssrf", ctx -> {
+            String url = "http://evil-stored-ssrf-hostname/latest/api/token";
+            ResponseResult response = makeHttpRequest(url);
+            ctx.status(response.getStatusCode()).result(response.getMessage());
+        });
+
+        app.post("/api/stored_ssrf_2", ctx -> {
+            Thread thread = new Thread(() -> {
+                try {
+                    Thread.sleep(10000); // Sleep for 10 seconds
+                    makeHttpRequest("http://evil-stored-ssrf-hostname/latest/api/token");
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+            });
+            thread.start();
+            ctx.result("Request successful (Stored SSRF 2 no context)");
+        });
+
         app.get("/api/read", ctx -> {
             String filePath = ctx.queryParam("path");
             ResponseResult content = Helpers.readFile(filePath);
