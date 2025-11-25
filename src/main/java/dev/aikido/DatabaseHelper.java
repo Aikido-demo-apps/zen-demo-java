@@ -32,21 +32,13 @@ public class DatabaseHelper {
     }
     public static void clearAll() throws SQLException {
         DataSource db = createDataSource();
-        Connection conn = null;
-        PreparedStatement stmt = null;
-
-        try {
-            conn = db.getConnection();
-            stmt = conn.prepareStatement("DELETE FROM pets");
+        try (Connection conn = db.getConnection();
+             PreparedStatement stmt = conn.prepareStatement("DELETE FROM pets")) {
             int rowsAffected = stmt.executeUpdate();
             System.out.println(rowsAffected + " pets have been removed from the database.");
         } catch (SQLException e) {
             Sentry.captureException(e);
             System.err.println("Database error occurred: " + e.getMessage());
-        } finally {
-            // Close resources in the reverse order of their creation
-            stmt.close();
-            conn.close();
         }
     }
     private static final String REGEX = "^[A-Za-z0-9 ,-.]+$";
@@ -59,10 +51,9 @@ public class DatabaseHelper {
     public static ArrayList<Object> getAllPets() {
         ArrayList<Object> pets = new ArrayList<>();
         DataSource db = createDataSource();
-        try {
-            Connection conn = db.getConnection();
-            PreparedStatement stmt = conn.prepareStatement("SELECT * FROM pets");
-            ResultSet rs = stmt.executeQuery();
+        try (Connection conn = db.getConnection();
+             PreparedStatement stmt = conn.prepareStatement("SELECT * FROM pets");
+             ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
                 Integer id = rs.getInt("pet_id");
@@ -83,18 +74,17 @@ public class DatabaseHelper {
         return pets;
     }
     public static Pet getPetById(Integer id) {
-        ArrayList<Object> pets = new ArrayList<>();
         DataSource db = createDataSource();
-        try {
-            Connection conn = db.getConnection();
-            PreparedStatement stmt = conn.prepareStatement("SELECT * FROM pets WHERE pet_id=?");
+        try (Connection conn = db.getConnection();
+             PreparedStatement stmt = conn.prepareStatement("SELECT * FROM pets WHERE pet_id=?")) {
             stmt.setInt(1, id);
-            ResultSet rs = stmt.executeQuery();
-            while (rs.next()) {
-                Integer pet_id = rs.getInt("pet_id");
-                String name = rs.getString("pet_name");
-                String owner = rs.getString("owner");
-                return new Pet(pet_id, name, owner);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Integer pet_id = rs.getInt("pet_id");
+                    String name = rs.getString("pet_name");
+                    String owner = rs.getString("owner");
+                    return new Pet(pet_id, name, owner);
+                }
             }
         } catch (SQLException e) {
             Sentry.captureException(e);
@@ -105,9 +95,8 @@ public class DatabaseHelper {
     public static Integer createPetByName(String pet_name) {
         String sql = "INSERT INTO pets (pet_name, owner) VALUES ('" + pet_name  + "', 'Aikido Security')";
         DataSource db = createDataSource();
-        try {
-            Connection conn = db.getConnection();
-            PreparedStatement insertStmt = conn.prepareStatement(sql);
+        try (Connection conn = db.getConnection();
+             PreparedStatement insertStmt = conn.prepareStatement(sql)) {
             return insertStmt.executeUpdate();
         } catch (SQLException e) {
             Sentry.captureException(e);
