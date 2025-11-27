@@ -14,8 +14,17 @@ COPY . .
 RUN make download
 RUN make build
 
+# /etc/hosts stage
+FROM amazoncorretto:17-alpine as etchosts
+WORKDIR /tmp
+RUN cp /etc/hosts hostsfile
+RUN echo "127.0.0.1   my-custom-hostname" >> hostsfile
+
 # Runtime stage
 FROM amazoncorretto:17-alpine
+
+# Set new entry for stored ssrf in /etc/hosts
+COPY --from=etchosts /tmp/hostsfile /etc/hosts
 
 # Install make and postgresql-client
 RUN apk update && \
@@ -29,8 +38,7 @@ WORKDIR /app
 COPY --from=builder /app .
 COPY database.sql /app/database.sql
 
-# Set new entry for stored ssrf in /etc/hosts
-RUN echo "169.254.169.254   evil-stored-ssrf-hostname" >> /etc/hosts
+
 
 # Copy startup script
 COPY start.sh /app/start.sh
