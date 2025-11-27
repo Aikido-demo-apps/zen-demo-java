@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# Set /etc/hosts
-echo "169.254.169.254   evil-stored-ssrf-hostname" >> /etc/hosts
-
 # Parse DATABASE_URL
 if [ -z "$DATABASE_URL" ]; then
     echo "DATABASE_URL environment variable is required"
