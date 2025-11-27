@@ -29,6 +29,9 @@ WORKDIR /app
 COPY --from=builder /app .
 COPY database.sql /app/database.sql
 
+# Set new entry for stored ssrf in /etc/hosts
+RUN echo "169.254.169.254   evil-stored-ssrf-hostname" >> /etc/hosts
+
 # Copy startup script
 COPY start.sh /app/start.sh
 RUN chmod 755 /app/start.sh
