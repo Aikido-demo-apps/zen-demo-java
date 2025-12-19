@@ -136,7 +136,18 @@ public class JavalinPostgres {
         });
         
         app.post("/api/stored_ssrf", ctx -> {
-            String url = "http://evil-stored-ssrf-hostname/latest/api/token";
+            Map<String, Integer> jsonBody = ctx.bodyAsClass(Map.class);
+            Integer urlIndex = jsonBody.get("urlIndex");
+            if (urlIndex == null) {
+                urlIndex = 0;
+            }
+            String[] urls = {
+                "http://evil-stored-ssrf-hostname/latest/api/token",
+                "http://metadata.google.internal/latest/api/token",
+                "http://metadata.goog/latest/api/token",
+                "http://169.254.169.254/latest/api/token",
+            };
+            String url = urls[urlIndex % urls.length];
             ResponseResult response = makeHttpRequest(url);
             ctx.status(response.getStatusCode()).result(response.getMessage());
         });
