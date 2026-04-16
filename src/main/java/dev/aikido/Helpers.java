@@ -68,7 +68,17 @@ public class Helpers {
             }
             in.close();
             return new ResponseResult(responseCode, response.toString());
-        } catch (AikidoException | UnknownHostException | SocketTimeoutException | IllegalArgumentException e) {
+        } catch (UnknownHostException e) {
+            // java.net.HttpURLConnection does not convert IDN (non-ASCII) hostnames
+            // to Punycode, so Unicode hosts fail DNS resolution. Surface that as
+            // 400 / InvalidURIError so QA tests can distinguish this client-side
+            // limitation from firewall blocks or real server errors.
+            if (hasNonAsciiChar(urlString)) {
+                return new ResponseResult(400, "InvalidURIError: " + e.getMessage());
+            }
+            Sentry.captureException(e);
+            return new ResponseResult(500, "Error: " + e.getMessage());
+        } catch (AikidoException | SocketTimeoutException | IllegalArgumentException e) {
             Sentry.captureException(e);
             return new ResponseResult(500, "Error: " + e.getMessage());
         } catch (IOException e) {
@@ -78,6 +88,15 @@ public class Helpers {
             Sentry.captureException(e);
             return new ResponseResult(400, "Error: " + e.getMessage() + " CLASS: " + e.getClass().getName() + " CAUSE: " + e.getCause().getMessage());
         }
+    }
+
+    private static boolean hasNonAsciiChar(String s) {
+        for (int i = 0; i < s.length(); i++) {
+            if (s.charAt(i) > 0x7F) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public static ResponseResult makeHttpRequestWithOkHttp(String urlString) {
