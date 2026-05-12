@@ -100,6 +100,20 @@ public class JavalinPostgres {
             }
         });
 
+        app.post("/api/create-form", ctx -> {
+            String petName = ctx.formParam("name");
+            if (petName == null || petName.trim().isEmpty()) {
+                ctx.status(400).result("Missing or empty 'name' field");
+                return;
+            }
+            Integer rowsCreated = DatabaseHelper.createPetByName(petName);
+            if (rowsCreated == -1) {
+                ctx.result(String.valueOf("Database error occurred"));
+            } else {
+                ctx.result("Success!");
+            }
+        });
+
         app.post("/api/execute", ctx -> {
             String userCommand = ctx.bodyAsClass(CommandRequest.class).userCommand;
             ResponseResult result = executeShellCommand(userCommand);
