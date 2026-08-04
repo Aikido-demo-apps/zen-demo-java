@@ -6,6 +6,9 @@
 app = 'zen-demo-java'
 primary_region = 'ams'
 
+[env]
+  AIKIDO_FEATURE_SSE = "true"
+
 [metrics]
   port = 9400
   path = "/metrics"
