@@ -10,6 +10,7 @@ import java.nio.file.Path;
 import java.net.UnknownHostException;
 import java.net.SocketTimeoutException;
 import java.nio.file.Paths;
+import java.util.concurrent.TimeUnit;
 
 
 public class Helpers {
@@ -82,7 +83,10 @@ public class Helpers {
 
     public static ResponseResult makeHttpRequestWithOkHttp(String urlString) {
         StringBuilder response = new StringBuilder();
-        OkHttpClient client = new OkHttpClient();
+        OkHttpClient client = new OkHttpClient.Builder()
+                .connectTimeout(5000, TimeUnit.MILLISECONDS)
+                .readTimeout(5000, TimeUnit.MILLISECONDS)
+                .build();
         Request request = new Request.Builder().url(urlString).build();
         try (Response resp = client.newCall(request).execute()) {
             if (resp.body() != null) {
