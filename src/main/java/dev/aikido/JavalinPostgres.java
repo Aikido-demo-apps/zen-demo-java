@@ -31,7 +31,7 @@ public class JavalinPostgres {
 
         Javalin app = Javalin.create(config -> {
             config.staticFiles.add("/public");
-        }).start(Integer.valueOf(System.getProperty("portNumber", "8088")));
+        });
         // Add our middleware :
         app.before(new SetUserHandler());
         app.before(new AikidoJavalinMiddleware());
@@ -170,6 +170,8 @@ public class JavalinPostgres {
             Sentry.captureException(e);
             ctx.status(500).result("Internal Server Error: " + e.getMessage());
         });
+
+        app.start(Integer.valueOf(System.getProperty("portNumber", "8088")));
 
         // Start Prometheus metrics server
         HTTPServer server = HTTPServer.builder().port(9400).buildAndStart();
