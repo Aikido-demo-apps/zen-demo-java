@@ -14,6 +14,11 @@ import java.util.concurrent.TimeUnit;
 
 
 public class Helpers {
+    private static final OkHttpClient HTTP_CLIENT = new OkHttpClient.Builder()
+            .connectTimeout(5000, TimeUnit.MILLISECONDS)
+            .readTimeout(5000, TimeUnit.MILLISECONDS)
+            .build();
+
     public static class ResponseResult {
         private final int statusCode;
         private final String message;
@@ -34,14 +39,15 @@ public class Helpers {
 
     public static ResponseResult executeShellCommand(String command) {
         StringBuilder output = new StringBuilder();
+        Process process = null;
         try {
-            Process process = Runtime.getRuntime().exec(command);
+            process = Runtime.getRuntime().exec(command);
             BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
             String line;
             while ((line = reader.readLine()) != null) {
                 output.append(line).append("\n");
             }
-            int exitCode = process.waitFor();
+            process.waitFor();
             return new ResponseResult(200, output.toString());
         } catch (IOException | InterruptedException e) {
             if (e.getMessage().contains("No such file or directory")) {
@@ -49,15 +55,19 @@ public class Helpers {
             }
             Sentry.captureException(e);
             return new ResponseResult(500, "Error: " + e.getMessage());
-
+        } finally {
+            if (process != null) {
+                process.destroy();
+            }
         }
     }
 
     public static ResponseResult makeHttpRequest(String urlString) {
         StringBuilder response = new StringBuilder();
+        java.net.HttpURLConnection conn = null;
         try {
             java.net.URL url = new java.net.URL(urlString);
-            java.net.HttpURLConnection conn = (java.net.HttpURLConnection) url.openConnection();
+            conn = (java.net.HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.setConnectTimeout(5000);
             conn.setReadTimeout(5000);
@@ -73,22 +83,23 @@ public class Helpers {
             Sentry.captureException(e);
             return new ResponseResult(500, "Error: " + e.getMessage());
         } catch (IOException e) {
-            if ( e.getCause().getMessage().contains("host = null")) {
+            if (e.getCause() != null && e.getCause().getMessage() != null && e.getCause().getMessage().contains("host = null")) {
                 return new ResponseResult(500, "Error: " + e.getMessage());
             }
             Sentry.captureException(e);
-            return new ResponseResult(400, "Error: " + e.getMessage() + " CLASS: " + e.getClass().getName() + " CAUSE: " + e.getCause().getMessage());
+            return new ResponseResult(400, "Error: " + e.getMessage() + " CLASS: " + e.getClass().getName()
+                    + (e.getCause() == null ? "" : " CAUSE: " + e.getCause().getMessage()));
+        } finally {
+            if (conn != null) {
+                conn.disconnect();
+            }
         }
     }
 
     public static ResponseResult makeHttpRequestWithOkHttp(String urlString) {
         StringBuilder response = new StringBuilder();
-        OkHttpClient client = new OkHttpClient.Builder()
-                .connectTimeout(5000, TimeUnit.MILLISECONDS)
-                .readTimeout(5000, TimeUnit.MILLISECONDS)
-                .build();
         Request request = new Request.Builder().url(urlString).build();
-        try (Response resp = client.newCall(request).execute()) {
+        try (Response resp = HTTP_CLIENT.newCall(request).execute()) {
             if (resp.body() != null) {
                 response.append(resp.body().string());
             }
