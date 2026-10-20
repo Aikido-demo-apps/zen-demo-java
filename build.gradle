@@ -19,15 +19,36 @@ repositories {
 dependencies {
     implementation files('zen_by_aikido/zen/agent_api.jar')
     implementation 'io.javalin:javalin:6.3.0'
-    implementation 'com.squareup.okhttp3:okhttp:4.9.3'
+    implementation 'com.squareup.okhttp3:okhttp:4.12.0'
     implementation 'org.slf4j:slf4j-simple:2.0.16'
-    implementation 'org.postgresql:postgresql:42.6.0'
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.17.2'
+    implementation 'org.postgresql:postgresql:42.7.11'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.18.11'
     implementation 'io.prometheus:prometheus-metrics-core:1.3.6'
     implementation 'io.prometheus:prometheus-metrics-instrumentation-jvm:1.3.6'
     implementation 'io.prometheus:prometheus-metrics-exporter-httpserver:1.3.6'
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
+
+    constraints {
+        implementation('org.eclipse.jetty:jetty-server:11.0.26') { because 'CVE-2024-8184' }
+        implementation('org.eclipse.jetty:jetty-http:11.0.26') { because 'CVE-2024-8184' }
+        implementation('org.eclipse.jetty:jetty-io:11.0.26') { because 'CVE-2024-8184' }
+        implementation('org.eclipse.jetty:jetty-util:11.0.26') { because 'CVE-2024-8184' }
+        implementation('org.eclipse.jetty:jetty-security:11.0.26') { because 'CVE-2024-8184' }
+        implementation('org.eclipse.jetty:jetty-servlet:11.0.26') { because 'CVE-2024-8184' }
+        implementation('org.eclipse.jetty:jetty-webapp:11.0.26') { because 'CVE-2024-8184' }
+        implementation('org.eclipse.jetty:jetty-xml:11.0.26') { because 'CVE-2024-8184' }
+        implementation('org.eclipse.jetty.websocket:websocket-jetty-server:11.0.26') { because 'CVE-2024-8184' }
+        implementation('org.eclipse.jetty.websocket:websocket-jetty-api:11.0.26') { because 'CVE-2024-8184' }
+        implementation('org.eclipse.jetty.websocket:websocket-jetty-common:11.0.26') { because 'CVE-2024-8184' }
+        implementation('org.eclipse.jetty.websocket:websocket-core-common:11.0.26') { because 'CVE-2024-8184' }
+        implementation('org.eclipse.jetty.websocket:websocket-core-server:11.0.26') { because 'CVE-2024-8184' }
+        implementation('org.eclipse.jetty.websocket:websocket-servlet:11.0.26') { because 'CVE-2024-8184' }
+        implementation('org.jetbrains.kotlin:kotlin-stdlib:2.4.20') { because 'AIKIDO-2026-188556, AIKIDO-2026-550292, CVE-2020-29582, CVE-2022-24329' }
+        implementation('org.jetbrains.kotlin:kotlin-stdlib-common:2.4.20') { because 'AIKIDO-2026-188556, AIKIDO-2026-550292' }
+        implementation('org.jetbrains.kotlin:kotlin-stdlib-jdk7:2.4.20') { because 'AIKIDO-2026-188556, AIKIDO-2026-550292' }
+        implementation('org.jetbrains.kotlin:kotlin-stdlib-jdk8:2.4.20') { because 'AIKIDO-2026-188556, AIKIDO-2026-550292' }
+    }
 }
 
 test {
