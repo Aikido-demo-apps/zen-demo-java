@@ -1,5 +1,6 @@
 package dev.aikido;
 
+import dev.aikido.agent_api.Track;
 import dev.aikido.agent_api.context.Context;
 import dev.aikido.agent_api.middleware.AikidoJavalinMiddleware;
 import dev.aikido.handlers.SetUserHandler;
@@ -69,6 +70,18 @@ public class JavalinPostgres {
         app.get("/test_user_blocking", ctx -> {
             String id = Context.get().getUser().id();
             ctx.result("Hello User with id: " + id);
+        });
+
+        // Test custom events :
+        app.get("/api/custom-event", ctx -> {
+            int count = ctx.queryParamAsClass("count", Integer.class)
+                    .check(c -> c >= 1 && c <= 100, "count must be an integer between 1 and 100")
+                    .getOrDefault(1);
+
+            for (int i = 0; i < count; i++) {
+                Track.track("user.login_failed");
+            }
+            ctx.result("Events tracked");
         });
 
         // Clear database :
